@@ -5,7 +5,10 @@
 
 var MonitorClient = require('./lib/Client'),
     CPUWatcher = require('./lib/watchers/cpu'),
-    MemoryWatcher = require('./lib/watchers/memory');
+    MemoryWatcher = require('./lib/watchers/memory'),
+    RedisMemoryWatcher = require('./lib/watchers/redis/memory'),
+    RedisDataSizeWatcher = require('./lib/watchers/redis/datasize'),
+    RedisCommandsWatcher = require('./lib/watchers/redis/commands');
 
 /**
  * Create monitor client instance
@@ -23,14 +26,19 @@ exports.createClient = function(name, description, redis, options){
  * Register watchers for monitor
  * @param {MonitorClient} monitorClient
  * @param {Array} watchers
+ * @param {Object} [options]
  */
-exports.registerWatchers = function(monitorClient, watchers){
+exports.registerWatchers = function(monitorClient, watchers, options){
     watchers.forEach(function(watcher){
-        var constructor = null;
+        var constructor = null, params = null;
         if (watcher === 'cpu') constructor = CPUWatcher;
         else if (watcher === 'memory') constructor = MemoryWatcher;
+        else if (watcher === 'redis-memory') constructor = RedisMemoryWatcher;
+        else if (watcher === 'redis-data-size') constructor = RedisDataSizeWatcher;
+        else if (watcher === 'redis-commands') constructor = RedisCommandsWatcher;
+        params = options[watcher];
 
         if (constructor == null) return;
-        monitorClient.registerWatcher(new constructor());
+        monitorClient.registerWatcher(new constructor(params));
     });
 };
