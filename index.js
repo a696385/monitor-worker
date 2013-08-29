@@ -29,6 +29,7 @@ exports.createClient = function(name, description, redis, options){
  * @param {Object} [options]
  */
 exports.registerWatchers = function(monitorClient, watchers, options){
+    options = options || {};
     watchers.forEach(function(watcher){
         var constructor = null, params = null;
         if (watcher === 'cpu') constructor = CPUWatcher;
