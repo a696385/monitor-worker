@@ -13,7 +13,7 @@ monitor.register(function(err){
         console.log('Registered');
     }
 });
-worker.registerWatchers(monitor, ['cpu', 'memory', 'redis-memory', 'redis-data-size', 'redis-commands'], {
+worker.registerWatchers(monitor, ['total-cpu', 'total-memory', 'cpu', 'memory', 'redis-memory', 'redis-data-size', 'redis-commands'], {
     'redis-memory': {
         port: 6379,
         host: 'localhost',

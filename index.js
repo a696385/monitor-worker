@@ -6,6 +6,8 @@
 var MonitorClient = require('./lib/Client'),
     CPUWatcher = require('./lib/watchers/cpu'),
     MemoryWatcher = require('./lib/watchers/memory'),
+    TotalCPUWatcher = require('./lib/watchers/totalcpu'),
+    TotalMemoryWatcher = require('./lib/watchers/totalmemory'),
     RedisMemoryWatcher = require('./lib/watchers/redis/memory'),
     RedisDataSizeWatcher = require('./lib/watchers/redis/datasize'),
     RedisCommandsWatcher = require('./lib/watchers/redis/commands');
@@ -37,6 +39,8 @@ exports.registerWatchers = function(monitorClient, watchers, options){
         else if (watcher === 'redis-memory') constructor = RedisMemoryWatcher;
         else if (watcher === 'redis-data-size') constructor = RedisDataSizeWatcher;
         else if (watcher === 'redis-commands') constructor = RedisCommandsWatcher;
+        else if (watcher === 'total-cpu') constructor = TotalCPUWatcher;
+        else if (watcher === 'total-memory') constructor = TotalMemoryWatcher;
         params = options[watcher];
 
         if (constructor == null) return;
